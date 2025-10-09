@@ -1,0 +1,257 @@
+/* General styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 20px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+h1 {
+    text-align: center;
+    font-size: 2.5em;
+    margin-bottom: 20px;
+}
+
+textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid;
+    font-family: Consolas, monaco, monospace;
+    font-size: 1em;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+}
+
+button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s;
+}
+
+.button-group {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.main-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.info-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+}
+
+.info-button svg {
+    stroke: currentColor;
+}
+
+.modal {
+    display: none; 
+    position: fixed; 
+    z-index: 1; 
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%; 
+    overflow: auto; 
+    background-color: rgba(0,0,0,0.4); 
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; 
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; 
+    max-width: 600px;
+    border-radius: 10px;
+}
+
+.dark-theme .modal-content {
+    background-color: #1e1e1e;
+}
+
+.close-button {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.dark-theme .close-button {
+    color: #e0e0e0;
+}
+
+.dark-theme .close-button:hover,
+.dark-theme .close-button:focus {
+    color: #fff;
+}
+
+.error-container {
+    color: #721c24;
+    margin-top: 10px;
+}
+
+.dark-theme .error-container {
+    color: #f8d7da;
+}
+
+#verErros {
+    display: none;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+/* General styles */
+
+#verquestoes {
+    margin-top: 20px;
+}
+
+.questao {
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    border: 1px solid;
+}
+
+.instructions {
+    margin-top: 30px;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+.instructions p {
+    margin: 0 0 10px;
+}
+
+.theme-switcher {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+/* Light Theme */
+body.light-theme {
+    background-color: #f4f4f9;
+    color: #333;
+}
+
+.light-theme h1 {
+    color: #0056b3;
+}
+
+.light-theme textarea {
+    background-color: #fff;
+    color: #333;
+    border-color: #ccc;
+}
+
+.light-theme button {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.light-theme button:hover {
+    background-color: #0056b3;
+}
+
+.light-theme .button-secondary {
+    background-color: #6c757d;
+}
+
+.light-theme .button-secondary:hover {
+    background-color: #5a6268;
+}
+
+.light-theme #verErros {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.light-theme .questao {
+    background-color: #e9ecef;
+    border-color: #ced4da;
+}
+
+.light-theme .instructions {
+    background-color: #e9ecef;
+}
+
+/* Dark Theme */
+body.dark-theme {
+    background-color: #121212;
+    color: #e0e0e0;
+}
+
+.dark-theme h1 {
+    color: #bb86fc;
+}
+
+.dark-theme textarea {
+    background-color: #1e1e1e;
+    color: #e0e0e0;
+    border-color: #444;
+}
+
+.dark-theme button {
+    background-color: #bb86fc;
+    color: #121212;
+}
+
+.dark-theme button:hover {
+    background-color: #a062d3;
+}
+
+.dark-theme .button-secondary {
+    background-color: #333;
+    color: #e0e0e0;
+}
+
+.dark-theme .button-secondary:hover {
+    background-color: #444;
+}
+
+.dark-theme #verErros {
+    background-color: #5c2b2f;
+    color: #f8d7da;
+    border: 1px solid #f5c6cb;
+}
+
+.dark-theme .questao {
+    background-color: #1e1e1e;
+    border-color: #444;
+}
+
+.dark-theme .instructions {
+    background-color: #1e1e1e;
+}
