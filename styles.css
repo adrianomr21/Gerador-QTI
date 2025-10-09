@@ -117,6 +117,9 @@ button {
 .error-container {
     color: #721c24;
     margin-top: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
 }
 
 .dark-theme .error-container {
@@ -192,6 +195,11 @@ body.light-theme {
     background-color: #5a6268;
 }
 
+.light-theme .error-container {
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+}
+
 .light-theme #verErros {
     background-color: #f8d7da;
     color: #721c24;
@@ -239,6 +247,16 @@ body.dark-theme {
 
 .dark-theme .button-secondary:hover {
     background-color: #444;
+}
+
+.dark-theme .error-container {
+    background-color: #5c2b2f;
+    border: 1px solid #f5c6cb;
+}
+
+.dark-theme .error-container {
+    background-color: #5c2b2f;
+    border: 1px solid #f5c6cb;
 }
 
 .dark-theme #verErros {

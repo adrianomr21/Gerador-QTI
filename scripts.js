@@ -334,212 +334,211 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     errorDiv.style.display = 'none';
 
-                    div.appendChild(errorDiv);
-
-        
-
-                    for(var q=1; q < question.length; q++){
-
-                        var t = question[q].split(' ')[0].split('\t')[0].substring(0,8);
-
-                        while(t == "" || t == " "){
-
-                            question[q] = question[q].substring(1);
-
-                            t = question[q].split(' ')[0].substring(0,8);
-
-                        }
-
-        
-
-                        if(q==2){
-
-                            if(t.toUpperCase() != "A)" && t.toUpperCase() != "*A)"){
-
-                                div.style.backgroundColor  = "#ffa1a1";
-
-                                errorDiv.innerHTML += "<span style='color:#cd0000'>ATENÇÃO: CORRIGIR ESTRUTURA DA PERGUNTA.</span><br/>";
-
-                                hasError = true;
-
-                                gerar = false;
-
-                            }
-
-                        }
-
+                                    for(var q=1; q < question.length; q++){
+                    
+                                        var t = question[q].split(' ')[0].split('  ')[0].substring(0,8);
+                    
+                                        while(t == "" || t == " "){
+                    
+                                            question[q] = question[q].substring(1);
+                    
+                                            t = question[q].split(' ')[0].substring(0,8);
+                    
+                                        }
+                    
                         
-
-                        if(t.toUpperCase() == "FEEDBACK"){
-
-                            if(question[q+1]){
-
-                                div.style.backgroundColor  = "#ffa1a1";
-
-                                errorDiv.innerHTML += "<span style='color:#cd0000'>ATENÇÃO: FEEDBACK COM QUEBRA DE LINHA.</span><br/>";
-
-                                hasError = true;
-
-                                gerar = false;
-
-                            }
-
-                        }else{
-
-                            if(question[q][0]=="*"){
-
-                                temresposta=true;
-
-                                contarespostas++;
-
-                            }
-
-        
-
-                            if(q>1 && t[2]){
-
-                                if((t[2] == ")" && t[3]) || t[2] != ")"){
-
-                                    div.style.backgroundColor  = "#ffa1a1";
-
-                                    errorDiv.innerHTML += "<span style='color:#cd0000'>ATENÇÃO: AS LETRAS DAS ALTERNATIVAS DEVEM CONTER ESPAÇO DEPOIS DO PARENTESES.</span><br/>";
-
-                                    hasError = true;
-
-                                    gerar = false;
-
-                                }
-
-                            }
-
-        
-
-                            if(question[q]==""){
-
-                                question.splice(q,1);
-
-                            }
-
-        
-
-                            if(q>=2){
-
-                                for(var qr=2; qr < question.length-1; qr++){
-
-                                    var alternativa = question[q].replace(question[q].substring(0,3),"").replace('*', '').trim();
-
-                                    var alternativa2 = question[qr].replace(question[qr].substring(0,3),"").replace('*', '').trim();
-
-                                    if(alternativa == alternativa2 && q != qr){
-
-                                        questaorepetida = true;
-
-                                        gerar = false;
-
+                    
+                                        if(q==2){
+                    
+                                            if(t.toUpperCase() != "A)" && t.toUpperCase() != "*A)"){
+                    
+                                                div.style.backgroundColor  = "#ffa1a1";
+                    
+                                                errorDiv.innerHTML += "<span style='color:#cd0000'>ATENÇÃO: CORRIGIR ESTRUTURA DA PERGUNTA.</span><br/>";
+                    
+                                                hasError = true;
+                    
+                                                gerar = false;
+                    
+                                            }
+                    
+                                        }
+                    
+                                        
+                    
+                                        if(t.toUpperCase() == "FEEDBACK"){
+                    
+                                            if(question[q+1]){
+                    
+                                                div.style.backgroundColor  = "#ffa1a1";
+                    
+                                                errorDiv.innerHTML += "<span style='color:#cd0000'>ATENÇÃO: FEEDBACK COM QUEBRA DE LINHA.</span><br/>";
+                    
+                                                hasError = true;
+                    
+                                                gerar = false;
+                    
+                                            }
+                    
+                                        }else{
+                    
+                                            if(question[q][0]=="*"){
+                    
+                                                temresposta=true;
+                    
+                                                contarespostas++;
+                    
+                                            }
+                    
+                        
+                    
+                                            if(q>1 && t[2]){
+                    
+                                                if((t[2] == ")" && t[3]) || t[2] != ")"){
+                    
+                                                    div.style.backgroundColor  = "#ffa1a1";
+                    
+                                                    errorDiv.innerHTML += "<span style='color:#cd0000'>ATENÇÃO: AS LETRAS DAS ALTERNATIVAS DEVEM CONTER ESPAÇO DEPOIS DO PARENTESES.</span><br/>";
+                    
+                                                    hasError = true;
+                    
+                                                    gerar = false;
+                    
+                                                }
+                    
+                                            }
+                    
+                        
+                    
+                                            if(question[q]==""){
+                    
+                                                question.splice(q,1);
+                    
+                                            }
+                    
+                        
+                    
+                                            if(q>=2){
+                    
+                                                for(var qr=2; qr < question.length-1; qr++){
+                    
+                                                    var alternativa = question[q].replace(question[q].substring(0,3),"").replace('*', '').trim();
+                    
+                                                    var alternativa2 = question[qr].replace(question[qr].substring(0,3),"").replace('*', '').trim();
+                    
+                                                    if(alternativa == alternativa2 && q != qr){
+                    
+                                                        questaorepetida = true;
+                    
+                                                        gerar = false;
+                    
+                                                    }
+                    
+                                                }
+                    
+                                            }
+                    
+                                            contaalternativas++
+                    
+                                        }
+                    
+                        
+                    
+                                        if(question.length<3){
+                    
+                                            div.style.backgroundColor  = "#ffa1a1";
+                    
+                                            errorDiv.innerHTML +="<span style='color:#cd0000'> ATENÇÃO: QUESTÃO SEM ALTERNATIVAS </span><br/>";
+                    
+                                            hasError = true;
+                    
+                                            gerar = false;
+                    
+                                        }
+                    
                                     }
-
-                                }
-
-                            }
-
-                            contaalternativas++
-
-                        }
-
-        
-
-                        if(question.length<3){
-
-                            div.style.backgroundColor  = "#ffa1a1";
-
-                            errorDiv.innerHTML +="<span style='color:#cd0000'> ATENÇÃO: QUESTÃO SEM ALTERNATIVAS </span><br/>";
-
-                            hasError = true;
-
-                            gerar = false;
-
-                        }
-
-                    }
-
-        
-
-                    for(var j=1; j < question.length; j++){
-
-                        var t = question[j].split(' ')[0].substring(0,8);
-
-                        if(j==1){
-
-                            div.innerHTML +=  "<br/><span style='color:#005d0c'><p>"+find_Img(question[j])+"</p></span>"; 
-
-                        }else if(t.toUpperCase() == "FEEDBACK"){ 
-
-                            div.innerHTML +=  "<br/><br/><span style='color:#bb1100'>"+find_Img(question[j])+"</span>";
-
-                        }else{
-
-                            if(j>2)div.innerHTML +="<br/>";
-
-                            if(question[j][0]=="*"){
-
-                                let altern_sem_asterisco = question[j].replace(t+" ", '');
-
-                                question[j] = question[j].replace(t+" ", '*');
-
-                                div.innerHTML += "<span style='color:#096522; font-size: 18px;'><strong>"+String.fromCharCode(j-1 + 64) +") "+find_Img(altern_sem_asterisco)+"</strong></span>";
-
-                            }else{
-
-                                question[j] = question[j].replace(t+" ", '');
-
-                                div.innerHTML += "<strong>"+String.fromCharCode(j-1 + 64) +") </strong>"+find_Img(question[j]);
-
-                            }
-
-                        } 
-
-                        questions[i] = question;
-
-                    }
-
-        
-
-                    if(temresposta == false || questaorepetida || contarespostas!=1 || contaalternativas<=1){
-
-                        gerar = false;
-
-                        div.style.backgroundColor  = "#ffa1a1";
-
-                        if(!temresposta){errorDiv.innerHTML +="Falta a resposta correta.<br/>"; hasError = true;};
-
-                        if(questaorepetida){errorDiv.innerHTML +="Tem alternativa repetida.<br/>"; hasError = true;};
-
-                        if(contarespostas > 1){errorDiv.innerHTML +="Só pode ter 1 resposta correta.<br/>"; hasError = true;};
-
-                        if(contaalternativas<=1){errorDiv.innerHTML +="Precisa ter no mínimo 2 alternativa.<br/>"; hasError = true;};
-
-                    }
-
-        
-
-                    if(hasError) {
-
-                        errorDiv.style.display = 'block';
-
-                        errorQuestions.push(String(i + 1).padStart(2, '0'));
-
-                    }
-
-        
-
-                    if(gerar){
-
-                        document.getElementById('btn_gerador').style.display = "block";
-
-                    }
-
-                    verquestoes.appendChild(div);
-
+                    
+                        
+                    
+                                    for(var j=1; j < question.length; j++){
+                    
+                                        var t = question[j].split(' ')[0].substring(0,8);
+                    
+                                        if(j==1){
+                    
+                                            div.innerHTML +=  "<br/><span style='color:#005d0c'><p>"+find_Img(question[j])+"</p></span>"; 
+                    
+                                        }else if(t.toUpperCase() == "FEEDBACK"){
+                    
+                                            div.innerHTML +=  "<br/><br/><span style='color:#bb1100'>"+find_Img(question[j])+"</span>";
+                    
+                                        }else{
+                    
+                                            if(j>2)div.innerHTML +="<br/>";
+                    
+                                            if(question[j][0]=="*"){
+                    
+                                                let altern_sem_asterisco = question[j].replace(t+" ", '');
+                    
+                                                question[j] = question[j].replace(t+" ", '*');
+                    
+                                                div.innerHTML += "<span style='color:#096522; font-size: 18px;'><strong>"+String.fromCharCode(j-1 + 64) +") "+find_Img(altern_sem_asterisco)+"</strong></span>";
+                    
+                                            }else{
+                    
+                                                question[j] = question[j].replace(t+" ", '');
+                    
+                                                div.innerHTML += "<strong>"+String.fromCharCode(j-1 + 64) +") </strong>"+find_Img(question[j]);
+                    
+                                            }
+                    
+                                        }
+                    
+                                        questions[i] = question;
+                    
+                                    }
+                    
+                        
+                    
+                                    if(temresposta == false || questaorepetida || contarespostas!=1 || contaalternativas<=1){
+                    
+                                        gerar = false;
+                    
+                                        div.style.backgroundColor  = "#ffa1a1";
+                    
+                                        if(!temresposta){errorDiv.innerHTML +="Falta a resposta correta.<br/>"; hasError = true;};
+                    
+                                        if(questaorepetida){errorDiv.innerHTML +="Tem alternativa repetida.<br/>"; hasError = true;};
+                    
+                                        if(contarespostas > 1){errorDiv.innerHTML +="Só pode ter 1 resposta correta.<br/>"; hasError = true;};
+                    
+                                        if(contaalternativas<=1){errorDiv.innerHTML +="Precisa ter no mínimo 2 alternativa.<br/>"; hasError = true;};
+                    
+                                    }
+                    
+                        
+                    
+                                    verquestoes.appendChild(div);
+                    
+                                    
+                    
+                                    if(hasError) {
+                    
+                                        errorDiv.style.display = 'block';
+                    
+                                        verquestoes.appendChild(errorDiv);
+                    
+                                        errorQuestions.push(String(i + 1).padStart(2, '0'));
+                    
+                                    }
+                    
+                        
+                    
+                                    if(gerar){
+                    
+                                        document.getElementById('btn_gerador').style.display = "block";
+                    
+                                    }
                 }
 
         
