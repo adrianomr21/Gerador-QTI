@@ -2,7 +2,7 @@
 
 This project is a single-file web application that functions as a QTI 2.1 package generator. QTI is a standard for e-learning material, and this tool specifically creates packages for multiple-choice questions.
 
-The application is contained entirely within the `Gerador_Qti2_1_v17.html` file. It uses HTML for structure, CSS for styling, and vanilla JavaScript for all its logic. It also leverages the `JSZip` and `FileSaver.js` libraries to generate and save the `.zip` file containing the QTI package.
+The application is contained entirely within the `index.html` file. It uses HTML for structure, CSS for styling, and vanilla JavaScript for all its logic. It also leverages the `JSZip` and `FileSaver.js` libraries to generate and save the `.zip` file containing the QTI package.
 
 The user interface allows for:
 *   Inputting question titles, questions, and multiple-choice answers.
@@ -16,7 +16,7 @@ The user interface allows for:
 
 This is a single-file web application. No build process is required.
 
-To run the application, simply open the `Gerador_Qti2_1_v17.html` file in a web browser.
+To run the application, simply open the `index.html` file in a web browser.
 
 # Development Conventions
 
