@@ -1,0 +1,136 @@
+html {
+    background-color: #0e0e12;
+    color: aliceblue;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+/*botão GERADOR QTI*/
+.button {
+    background-color: #bf4c0b;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 20px;
+    margin: 4px 2px;
+    cursor: pointer;
+    width: 100%;
+    border-radius: 10px;
+}
+
+/*TROCAR TIPO DE QUESTÃO (MÚLTIPLA ESCOLHA/ DISCURSIVA)*/
+.trocar_tipo {
+    position: absolute;
+    right: 0;
+    top: 0;
+    background-color: #8b0000;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    margin: 4px 4px;
+    cursor: pointer;
+    width: 20%;
+    border-radius: 10px;
+}
+
+/*botão LINHA ÚNICA e NEGRITO*/
+.button2 {
+    float: right;
+    background-color: #414141;
+    width: 12%;
+    height: 50px;
+    border: none;
+    margin-right: 20px;
+    color: white;
+    padding: 5px 32px;
+    text-align: center;
+    text-decoration: none;
+    /*display: inline-block;*/
+    font-size: 16px;
+
+    cursor: pointer;
+    border-radius: 10px;
+}
+
+/*botão ENCONTRE IMAGEM*/
+.button3 {
+    float: right;
+    background-color: #225863;
+    width: 34%;
+    height: 50px;
+    /*margin-left: 40px;*/
+    border: none;
+    color: white;
+    padding: 5px 32px;
+    text-align: center;
+    text-decoration: none;
+    /*display: inline-block;*/
+    font-size: 16px;
+
+
+    cursor: pointer;
+    border-radius: 10px;
+}
+
+/*botão A) das alternativas*/
+.button4 {
+    background-color: #225863;
+    width: 14%;
+    height: 50px;
+    margin-right: 20px;
+    /*margin-right: 40px;*/
+    border: none;
+    color: white;
+    padding: 5px 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+
+    cursor: pointer;
+    border-radius: 10px;
+}
+
+
+
+/*botão VERIFICA QUESTÃO*/
+.btn_verifica {
+    background-color: #005716;
+    /* Green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 20px;
+    margin: 4px 0px;
+    cursor: pointer;
+    width: 100%;
+    border-radius: 10px;
+}
+
+.questao {
+    background-color: #bbffcc;
+    /* Green */
+    border-style: solid;
+    border-color: #091016;
+    padding: 10px;
+    color: #091016;
+}
+
+#verErros {
+    background-color: #ffcece;
+    /* red */
+    padding-left: 20px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    color: red;
+
+}

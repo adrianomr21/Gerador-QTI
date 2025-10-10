@@ -1,4 +1,3 @@
-//const imagensBase64 =[];
 
 document.getElementById('fileInput').addEventListener('change', function (event) {
     // Cria uma instância da classe FileList para acessar os arquivos selecionados
@@ -52,7 +51,7 @@ document.getElementById('fileInput').addEventListener('change', function (event)
                                     //chama a função para separar a descrição da pergunta das alternativas que estão dentro da tag <itemBody>
                                     let enunciado_pergunta = FuncRegex(/(.*?)<choiceInteraction/s, itemBodyContent);
                                     //limpa a descrição da pergunta tirando os espaços e as tags <div>
-                                    enunciado_pergunta = enunciado_pergunta.replaceAll(/<div>|<\/div>/gi,"").replace(/\n/g, " ").replace(/\s+/g, " ").trim();
+                                    enunciado_pergunta = enunciado_pergunta.replaceAll(/<div>|<div>/gi,"").replace(/\n/g, " ").replace(/\s+/g, " ").trim();
                                     //console.log("Enunciado: [Questão: "+titulo+"] "+enunciado_pergunta);
 
                                     //ESCREVE ENUNCIADO NO TEXTAREA-----------
@@ -61,7 +60,7 @@ document.getElementById('fileInput').addEventListener('change', function (event)
                                     
                                     //RESPOSTA CORRETA--------------
                                     let encontra_resposta = FuncRegex(/<correctResponse>(.*?)<\/correctResponse>/s, xmlString);
-                                    let reposta_correta = encontra_resposta.replaceAll(/<value>|<\/value>/gi,"").trim();
+                                    let reposta_correta = encontra_resposta.replaceAll(/<value>|<value>/gi,"").trim();
                                     //console.log(reposta_correta);
 
 
@@ -73,13 +72,13 @@ document.getElementById('fileInput').addEventListener('change', function (event)
                                     matches.forEach(function(match, index) {
                                         
                                         let alternativa = match[1].replace(/\n/g, " ").replace(/\s+/g, " ").trim();
-                                        if(match[0].includes(reposta_correta)){//SE FOR A RESPOSTA CERTA
+                                        if(match[0].includes(reposta_correta)){
 
                                             //ESCREVE NO TEXTAREA
                                             document.getElementById('questions').value += "*"+String.fromCharCode(index + 65)+') ' + alternativa + '\n';
                                             //console.log("Resposta correta é a: "+(index+1)+" "+reposta_correta+") "+match[0]);
 
-                                        }else{//SE FOR OUTRAS ALTERNATIVAS
+                                        }else{
                                             
                                             //ESCREVE NO TEXTAREA
                                             document.getElementById('questions').value += String.fromCharCode(index + 65)+') ' + alternativa + '\n';
@@ -96,7 +95,7 @@ document.getElementById('fileInput').addEventListener('change', function (event)
                                     // Itera sobre as correspondências encontradas
                                     matchesFeed.forEach(function(match) {
                                         
-                                        let feedback = match[1].replaceAll(/<div>|<\/div>/gi,"").replace(/\n/g, " ").replace(/\s+/g, " ").trim();
+                                        let feedback = match[1].replaceAll(/<div>|<div>/gi,"").replace(/\n/g, " ").replace(/\s+/g, " ").trim();
                                         if(match[0].includes('identifier="correct_fb"')){
 
                                             //ESCREVE NO TEXTAREA
@@ -127,8 +126,8 @@ document.getElementById('fileInput').addEventListener('change', function (event)
                                 // Faça o que quiser com a base64Data aqui, como enviá-la para o servidor ou exibi-la na página
                                 //console.log('Base64 da imagem ' + relativePath + ': ' + base64Data);
                                 //imagensBase64.push([relativePath, base64Data]);
-                                guardaFotos.push([relativePath.replace("images/",""), base64Data]);
-                                //console.log('Imagens:\n', imagensBase64);//['Imagem13.jpg', 'data:appli...]
+                                guardaFotos.push([relativePath.replace("images/", ""), base64Data]);
+                                //console.log('Imagens:\n', imagensBase64);//['Imagem13.jpg', 'data:appli...']
                                 
                             };
                         });
@@ -154,10 +153,10 @@ function encontraImg(t){
         //console.log(matches); // retorna ['<img src="../images/img_00001.png">', '<img src="../images/img_00003.png">']
         if(matches){
             matches.forEach(match => {
-                const src = match.match(/src="(.*?)"/)[1]; //depois de achar a tag <img>, pega o nome da imagem
+                const src = match.match(/src=\"(.*?)\"/)[1]; //depois de achar a tag <img>, pega o nome da imagem
                 //console.log(src);
                 if(!src.includes("../images/")){
-                    let tmp = src.replace("..","");
+                    let tmp = src.replace("..", "");
                     t = t.replace(src, "../images"+tmp);
                 }
             
@@ -166,5 +165,3 @@ function encontraImg(t){
     }
     return t;
 }
-
-
