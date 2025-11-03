@@ -12,20 +12,27 @@
 <body>
     <div class="container">
         <header>
-            <h1>Gerador QTI 2.1 (Múltipla Escolha)</h1>
-            <p>Crie pacotes QTI 2.1 de forma rápida e fácil.</p>
+            <h1>Gerador QTI 2.1</h1>
         </header>
 
         <main>
-            <div class="main-content">
-                <div class="input-section">
-                    <div class="form-group">
-                        <label for="title">Título do arquivo QTI.zip:</label>
-                        <textarea id="title" rows="1">modelo_nomedocurso_ava_objetiva_onl</textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="questions">Questões:</label>
-                        <textarea id="questions" rows="20" contenteditable="true">
+            <div class="form-group">
+                <label for="title">Título do arquivo QTI.zip:</label>
+                <textarea id="title" rows="1">modelo_nomedocurso_ava_objetiva_onl</textarea>
+            </div>
+
+            <div class="editor-toolbar">
+                <button class="button" id="convertToHtml">Descrição</button>
+                <button class="button" id="colocaLetras">Alternativas</button>
+                <button class="button" id="colocaFeedback">Feedback</button>
+                <button class="button" id="selecionarImagem">Imagem</button>
+                <button class="button" id="convertToItalico">Itálico</button>
+                <button class="button" id="convertToNegrito">Negrito</button>
+            </div>
+
+            <div class="form-group">
+                <label for="questions">Editor de Questões:</label>
+                <textarea id="questions" rows="20" contenteditable="true">
 Questão 01:
 PERGUNTA
 A) RESP1
@@ -44,37 +51,26 @@ C) RESP3
 E) RESP5
 FEEDBACK: OPCIONAL
 </textarea>
-                    </div>
-                </div>
-
-                <aside class="sidebar">
-                    <div class="actions-group">
-                        <h2>Formatação</h2>
-                        <button class="button" id="convertToHtml">Descrição</button>
-                        <button class="button" id="colocaLetras">Alternativas</button>
-                        <button class="button" id="colocaFeedback">Feedback</button>
-                        <button class="button" id="selecionarImagem">Imagem</button>
-                        <button class="button" id="convertToItalico">Itálico</button>
-                        <button class="button" id="convertToNegrito">Negrito</button>
-                    </div>
-                    <div class="instructions-group">
-                        <h2>Instruções</h2>
-                        <p><strong>Estrutura:</strong></p>
-                        <ul>
-                            <li><code>QUESTÃO 01</code> - Número da questão</li>
-                            <li><code>PERGUNTA</code> - Texto da pergunta</li>
-                            <li><code>A) RESP1</code> - Alternativa</li>
-                            <li><code>*B) RESP2</code> - Alternativa correta</li>
-                            <li><code>FEEDBACK:</code> Opcional</li>
-                        </ul>
-                        <p><strong>Atalhos:</strong></p>
-                        <ul>
-                            <li><code>Ctrl+Shift+L</code> - Limpar tudo</li>
-                            <li><code>Ctrl+Shift+Space</code> - Adicionar estrutura</li>
-                        </ul>
-                    </div>
-                </aside>
             </div>
+
+            <details class="instructions-group">
+                <summary>Mostrar/Ocultar Instruções</summary>
+                <div>
+                    <p><strong>Estrutura:</strong></p>
+                    <ul>
+                        <li><code>QUESTÃO 01</code> - Número da questão</li>
+                        <li><code>PERGUNTA</code> - Texto da pergunta</li>
+                        <li><code>A) RESP1</code> - Alternativa</li>
+                        <li><code>*B) RESP2</code> - Alternativa correta</li>
+                        <li><code>FEEDBACK:</code> Opcional</li>
+                    </ul>
+                    <p><strong>Atalhos:</strong></p>
+                    <ul>
+                        <li><code>Ctrl+Shift+L</code> - Limpar tudo</li>
+                        <li><code>Ctrl+Shift+Space</code> - Adicionar estrutura</li>
+                    </ul>
+                </div>
+            </details>
 
             <div class="verification-section">
                 <div id="verErros"></div>

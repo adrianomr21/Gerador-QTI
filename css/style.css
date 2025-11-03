@@ -9,7 +9,7 @@ body {
 }
 
 .container {
-    max-width: 1200px;
+    max-width: 900px;
     margin: 0 auto;
     background-color: #fff;
     padding: 30px;
@@ -20,34 +20,18 @@ body {
 /* Header */
 header {
     text-align: center;
-    margin-bottom: 40px;
-    border-bottom: 1px solid #e0e0e0;
-    padding-bottom: 20px;
+    margin-bottom: 20px;
 }
 
 header h1 {
-    font-size: 2.5em;
+    font-size: 2em;
     color: #2c3e50;
-    margin-bottom: 10px;
-}
-
-header p {
-    font-size: 1.1em;
-    color: #7f8c8d;
+    margin: 0;
 }
 
 /* Main Content */
-.main-content {
-    display: flex;
-    gap: 30px;
-}
-
-.input-section {
-    flex: 3;
-}
-
-.sidebar {
-    flex: 1;
+main {
+    width: 100%;
 }
 
 /* Forms */
@@ -71,6 +55,7 @@ textarea {
     font-size: 1em;
     background-color: #fdfdfd;
     transition: border-color 0.3s;
+    box-sizing: border-box;
 }
 
 textarea:focus {
@@ -78,33 +63,43 @@ textarea:focus {
     outline: none;
 }
 
+/* Editor Toolbar */
+.editor-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: #ecf0f1;
+    border-radius: 4px;
+}
+
 /* Buttons */
 .button, .button-primary, .button-cta {
-    display: block;
-    width: 100%;
-    padding: 12px;
+    padding: 10px 15px;
     border: none;
     border-radius: 4px;
-    font-size: 1em;
+    font-size: 0.9em;
     font-weight: 500;
     cursor: pointer;
     text-align: center;
     transition: background-color 0.3s, transform 0.2s;
-    margin-bottom: 10px;
 }
 
 .button {
-    background-color: #ecf0f1;
+    background-color: #fff;
     color: #34495e;
+    border: 1px solid #bdc3c7;
 }
 
 .button:hover {
-    background-color: #dce4e6;
+    background-color: #f8f9f9;
 }
 
 .button-primary {
     background-color: #3498db;
     color: #fff;
+    width: 100%;
 }
 
 .button-primary:hover {
@@ -116,6 +111,7 @@ textarea:focus {
     color: #fff;
     padding: 15px;
     font-size: 1.2em;
+    width: 100%;
 }
 
 .button-cta:hover {
@@ -126,21 +122,23 @@ textarea:focus {
     transform: translateY(1px);
 }
 
-/* Sidebar Groups */
-.actions-group, .instructions-group {
-    background-color: #f8f9fa;
-    padding: 20px;
-    border-radius: 4px;
+/* Instructions */
+.instructions-group {
     margin-bottom: 20px;
 }
 
-.actions-group h2, .instructions-group h2 {
-    font-size: 1.4em;
-    color: #2c3e50;
-    margin-top: 0;
-    margin-bottom: 15px;
-    border-bottom: 1px solid #e0e0e0;
-    padding-bottom: 10px;
+.instructions-group summary {
+    cursor: pointer;
+    font-weight: 500;
+    color: #3498db;
+}
+
+.instructions-group div {
+    margin-top: 10px;
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+    border: 1px solid #e0e0e0;
 }
 
 .instructions-group ul {
