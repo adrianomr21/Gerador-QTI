@@ -1,40 +1,31 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 <head>
-    <title>Gerador QTI - MÚLTIPLA ESCOLHA</title>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.6.0/jszip.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
-        <script src="js/jquery.min.js"></script>   
-        <link rel="stylesheet" href="css/style.css">
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador QTI - Múltipla Escolha</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    
-    
-    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>-->
-     <!--BOTÃO TROCAR PARA DISCURSIVA-->
-     <!--<button  class="trocar_tipo" onclick="location.href='Gerador_CSV_vs01.html'" type="button">TROCAR PARA PUBLICAR QUESTÕES DISCURSIVAS</button> </br>-->
+    <div class="container">
+        <header>
+            <h1>Gerador QTI 2.1 (Múltipla Escolha)</h1>
+            <p>Crie pacotes QTI 2.1 de forma rápida e fácil.</p>
+        </header>
 
-    <h1>GERADOR QTI 2.1 (MÚLTIPLA ESCOLHA) </h1>
-    
-    <!--BOTÃO importador de QTI.zip-->
-    <input type="file" id="fileInput" accept=".zip"><br/><br/>
-        
-    <div>
-        <label for="title">Título do arquivo QTI.zip:</label></br>
-        <textarea id="title" rows="2" cols="50" style="width: 99%; background-color: #bbffcc;" onclick="salvarLocalStorage();" onchange="salvarLocalStorage();" onkeyup="salvarLocalStorage();" >modelo_nomedocurso_ava_objetiva_onl</textarea>
-    </div>
-
-    <!--
-    <div>
-        <label for="title_question">Título da Questão:</label></br>
-        <textarea id="title_question" rows="2" cols="50" style="width: 99%; background-color: #bbffcc;" onclick="salvarLocalStorage();" onchange="salvarLocalStorage();" onkeyup="salvarLocalStorage();" >nomedocurso</textarea>
-    </div>-->
-
-    <div>
-    <label for="questions">Questões:</label></br>
-      
-<textarea id="questions" rows="10" cols="50" style="width: 99%; height: 500px; background-color: #bbffcc;" contenteditable="true" onclick="salvarLocalStorage();" onchange="salvarLocalStorage();" onkeyup="salvarLocalStorage();">
+        <main>
+            <div class="main-content">
+                <div class="input-section">
+                    <div class="form-group">
+                        <label for="title">Título do arquivo QTI.zip:</label>
+                        <textarea id="title" rows="1">modelo_nomedocurso_ava_objetiva_onl</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="questions">Questões:</label>
+                        <textarea id="questions" rows="20" contenteditable="true">
 Questão 01:
 PERGUNTA
 A) RESP1
@@ -53,69 +44,61 @@ C) RESP3
 E) RESP5
 FEEDBACK: OPCIONAL
 </textarea>
+                    </div>
+                </div>
+
+                <aside class="sidebar">
+                    <div class="actions-group">
+                        <h2>Formatação</h2>
+                        <button class="button" id="convertToHtml">Descrição</button>
+                        <button class="button" id="colocaLetras">Alternativas</button>
+                        <button class="button" id="colocaFeedback">Feedback</button>
+                        <button class="button" id="selecionarImagem">Imagem</button>
+                        <button class="button" id="convertToItalico">Itálico</button>
+                        <button class="button" id="convertToNegrito">Negrito</button>
+                    </div>
+                    <div class="instructions-group">
+                        <h2>Instruções</h2>
+                        <p><strong>Estrutura:</strong></p>
+                        <ul>
+                            <li><code>QUESTÃO 01</code> - Número da questão</li>
+                            <li><code>PERGUNTA</code> - Texto da pergunta</li>
+                            <li><code>A) RESP1</code> - Alternativa</li>
+                            <li><code>*B) RESP2</code> - Alternativa correta</li>
+                            <li><code>FEEDBACK:</code> Opcional</li>
+                        </ul>
+                        <p><strong>Atalhos:</strong></p>
+                        <ul>
+                            <li><code>Ctrl+Shift+L</code> - Limpar tudo</li>
+                            <li><code>Ctrl+Shift+Space</code> - Adicionar estrutura</li>
+                        </ul>
+                    </div>
+                </aside>
+            </div>
+
+            <div class="verification-section">
+                <div id="verErros"></div>
+                <button class="button-primary" id="verificaQuestoes">Verificar Questões</button>
+            </div>
+
+            <div id="verquestoes"></div>
+
+            <div class="generation-section">
+                <button class="button-cta" id="btn_gerador">Gerar QTI 2.1</button>
+                <p class="editor-link">*Para formatações avançadas, use um <a href="https://html-online.com/editor/" target="_blank">editor HTML</a>.</p>
+            </div>
+        </main>
+
+        <footer>
+            <p>Importar um pacote .zip QTI:</p>
+            <input type="file" id="fileInput" accept=".zip">
+        </footer>
     </div>
 
-    <!--BOTÃO FORMATAÇÃO DO TEXTO-->
-    <button class="button4" id="convertToHtml">DESCRIÇÃO</button> 
-
-    <!--BOTÃO COLOCAR AS LETRAS DAS ALTERNATIVAS-->
-    <button class="button4" id="colocaLetras" onclick="colocaLetras()">ALTERNATIVAS</button> 
-
-    <!--BOTÃO COLOCAR A PALAVRA FEEDBACK-->
-    <button class="button4" id="colocaFeedback" onclick="PalavraFeedback()">FEEDBACK</button> 
-
-    <!--BOTÃO ENCONTRAR IMAGEM-->
-    <button class="button2" onclick="selecionarImagem()">IMAGEM</button>
-    <button class="button2" id="convertToNegrito" onclick="Italico()">ITÁLICO</button>
-    <button class="button2" id="convertToNegrito" onclick="Negrito()">NEGRITO</button>
-
-    
-
-    <br/><br/>
-
-    <!--ESPAÇO PARA ERROS-->
-    <div id="verErros"></div>
-
-    <br/>
-    
-    <!--BOTÃO GERADOR DO PACOTE QTI2.1-->
-    <button class="btn_verifica" onclick="verificaquestoes()">>> CLIQUE AQUI PARA VERIFICAR QUESTÕES <<</button>
-    <br/><br/>
-
-    <p>_______________________________________________________________</p>
-    <p><strong>ESTRUTURA DA PERGUNTA:</strong>
-    <br>_______________________________________________________________</p>
-    <div style="padding-left: 30px;">
-    <p>QUESTÃO 01 - Número da questão<br/>
-       PERGUNTA - Texto da pergunta em uma linha só<br/>
-       A) RESP1<br/>
-       *B) RESP2 - A correta está marcada com asterísco no ínicio de tudo<br/>
-       C) RESP3<br/>
-       D) RESP4<br/>
-       E) RESP5<br/>
-       FEEDBACK:&nbsp;Aqui o feedback (OPCIONAL)</p></div>
-    <p>_______________________________________________________________</p>
-    <p><strong>ATENÇÃO:</strong> linha em branco separa as perguntas.</p>
-    <p><strong>IMAGENS:</strong> Posicione o cursor onde deseja adicionar a imagem e clique no botão "IMAGEM".  As imagens são adicionadas no Zip pelo botão, não adicione de outra forma.</p>
-    <p><strong>LIMPAR TUDO:</strong> Pressione ctrl+shift+L para limpar tudo.</p>
-    <br>
-
-
-    <!--PARA VISUALIZAR AS QUESTÕES PRONTAS-->
-    <div id="verquestoes"></div>
-
-    <!--BOTÃO GERADOR DO PACOTE QTI2.1-->
-    <button class="button" id="btn_gerador" onclick="generateQti()">>> CLIQUE AQUI PARA GERAR QTI 2.1 <<</button>
-    <p>*Se o texto da pergunta ter mais formatações use esse site: <a href="https://html-online.com/editor/" target="_blank"> html-online.com/editor/</a></p>    
-    
-
-
-
-
-    
-    <!-- SCRITPS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.6.0/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    <script src="js/jquery.min.js"></script>
     <script src="js/script.js"></script>
     <script src="js/import_qti.js"></script>
-
 </body>
 </html>

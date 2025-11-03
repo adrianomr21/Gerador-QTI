@@ -1,4 +1,3 @@
-
 document.getElementById('fileInput').addEventListener('change', function (event) {
     // Cria uma instância da classe FileList para acessar os arquivos selecionados
     var files = event.target.files;
@@ -33,7 +32,7 @@ document.getElementById('fileInput').addEventListener('change', function (event)
                                 
                                 // TAG COM A PERGUNTA E ALTERNATIVAS.... 
                                 //Chama a Função que executa a expressão regular no texto XML para encontrar o conteúdo da tag <itemBody>
-                                var itemBodyContent = FuncRegex(/<itemBody>(.*?)<\/itemBody>/s, xmlString);
+                                var itemBodyContent = FuncRegex(/<itemBody>([\s\S]*?)<\/itemBody>/, xmlString);
                                 //console.log(itemBodyContent);
 
                                 //Encontrar todas as imagens e ajustar o caminho. ../images/imagem00001.png
@@ -49,9 +48,9 @@ document.getElementById('fileInput').addEventListener('change', function (event)
 
                                     //SEPARA ENUNCIADO--------
                                     //chama a função para separar a descrição da pergunta das alternativas que estão dentro da tag <itemBody>
-                                    let enunciado_pergunta = FuncRegex(/(.*?)<choiceInteraction/s, itemBodyContent);
+                                    let enunciado_pergunta = FuncRegex(/([\s\S]*?)<choiceInteraction/, itemBodyContent);
                                     //limpa a descrição da pergunta tirando os espaços e as tags <div>
-                                    enunciado_pergunta = enunciado_pergunta.replaceAll(/<div>|<div>/gi,"").replace(/\n/g, " ").replace(/\s+/g, " ").trim();
+                                    enunciado_pergunta = enunciado_pergunta.replace(/<div>/g, "").replace(/<\/div>/g, "").replace(/\n/g, " ").replace(/\s+/g, " ").trim();
                                     //console.log("Enunciado: [Questão: "+titulo+"] "+enunciado_pergunta);
 
                                     //ESCREVE ENUNCIADO NO TEXTAREA-----------
@@ -59,51 +58,39 @@ document.getElementById('fileInput').addEventListener('change', function (event)
                                     
                                     
                                     //RESPOSTA CORRETA--------------
-                                    let encontra_resposta = FuncRegex(/<correctResponse>(.*?)<\/correctResponse>/s, xmlString);
-                                    let reposta_correta = encontra_resposta.replaceAll(/<value>|<value>/gi,"").trim();
-                                    //console.log(reposta_correta);
-
+                                    let reposta_correta = FuncRegex(/<correctResponse>[\s\S]*<value>([\s\S]*?)<\/value>[\s\S]*<\/correctResponse>/, xmlString);
 
                                     //ALTERNATIVAS----------
-                                    let regex = /<simpleChoice[^>]*>(.*?)<\/simpleChoice>/gs;
-                                    let matches  = Array.from(itemBodyContent.matchAll(regex)); //TRANSFORMA A STRING EM ARRAY
-                                                                    
-                                    // Itera sobre as correspondências encontradas
-                                    matches.forEach(function(match, index) {
-                                        
-                                        let alternativa = match[1].replace(/\n/g, " ").replace(/\s+/g, " ").trim();
-                                        if(match[0].includes(reposta_correta)){
+                                    let regex = /<simpleChoice[^>]*identifier="([^"]*)"[^>]*>([\s\S]*?)<\/simpleChoice>/g;
+                                    let match;
+                                    let index = 0;
+                                    while ((match = regex.exec(itemBodyContent)) !== null) {
+                                        let identifier = match[1];
+                                        let alternativa = match[2].replace(/\n/g, " ").replace(/\s+/g, " ").trim();
 
+                                        if(identifier === reposta_correta){
                                             //ESCREVE NO TEXTAREA
                                             document.getElementById('questions').value += "*"+String.fromCharCode(index + 65)+') ' + alternativa + '\n';
-                                            //console.log("Resposta correta é a: "+(index+1)+" "+reposta_correta+") "+match[0]);
-
                                         }else{
-                                            
                                             //ESCREVE NO TEXTAREA
                                             document.getElementById('questions').value += String.fromCharCode(index + 65)+') ' + alternativa + '\n';
-
                                         }
-
-                                    });
+                                        index++;
+                                    }
                                     
 
                                     //FEEDBACK--------------
-                                    let regexFeed = /<modalFeedback[^>]*>(.*?)<\/modalFeedback>/gs;
-                                    let matchesFeed  = Array.from(xmlString.matchAll(regexFeed)); //TRANSFORMA A STRING EM ARRAY
-                                                                    
-                                    // Itera sobre as correspondências encontradas
-                                    matchesFeed.forEach(function(match) {
-                                        
-                                        let feedback = match[1].replaceAll(/<div>|<div>/gi,"").replace(/\n/g, " ").replace(/\s+/g, " ").trim();
-                                        if(match[0].includes('identifier="correct_fb"')){
+                                    let regexFeed = /<modalFeedback[^>]*>([\s\S]*?)<\/modalFeedback>/g;
+                                    let matchFeed;
+                                    while ((matchFeed = regexFeed.exec(xmlString)) !== null) {
+                                        let feedback = matchFeed[1].replace(/<div>/g, "").replace(/<\/div>/g, "").replace(/\n/g, " ").replace(/\s+/g, " ").trim();
+                                        if(matchFeed[0].includes('identifier="correct_fb"')){
 
                                             //ESCREVE NO TEXTAREA
                                             document.getElementById('questions').value += "FEEDBACK: " + feedback + "\n";
 
                                         }
-
-                                    });
+                                    }
                                     
                                 }
 

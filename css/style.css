@@ -1,136 +1,218 @@
-html {
-    background-color: #0e0e12;
-    color: aliceblue;
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+/* General Styles */
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f4f7f9;
+    color: #333;
+    margin: 0;
+    padding: 20px;
+    line-height: 1.6;
 }
 
-/*botão GERADOR QTI*/
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+/* Header */
+header {
+    text-align: center;
+    margin-bottom: 40px;
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 20px;
+}
+
+header h1 {
+    font-size: 2.5em;
+    color: #2c3e50;
+    margin-bottom: 10px;
+}
+
+header p {
+    font-size: 1.1em;
+    color: #7f8c8d;
+}
+
+/* Main Content */
+.main-content {
+    display: flex;
+    gap: 30px;
+}
+
+.input-section {
+    flex: 3;
+}
+
+.sidebar {
+    flex: 1;
+}
+
+/* Forms */
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: #34495e;
+}
+
+textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 1em;
+    background-color: #fdfdfd;
+    transition: border-color 0.3s;
+}
+
+textarea:focus {
+    border-color: #3498db;
+    outline: none;
+}
+
+/* Buttons */
+.button, .button-primary, .button-cta {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 4px;
+    font-size: 1em;
+    font-weight: 500;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.3s, transform 0.2s;
+    margin-bottom: 10px;
+}
+
 .button {
-    background-color: #bf4c0b;
-    border: none;
-    color: white;
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 20px;
-    margin: 4px 2px;
-    cursor: pointer;
-    width: 100%;
-    border-radius: 10px;
+    background-color: #ecf0f1;
+    color: #34495e;
 }
 
-/*TROCAR TIPO DE QUESTÃO (MÚLTIPLA ESCOLHA/ DISCURSIVA)*/
-.trocar_tipo {
-    position: absolute;
-    right: 0;
-    top: 0;
-    background-color: #8b0000;
-    border: none;
-    color: white;
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 14px;
-    margin: 4px 4px;
-    cursor: pointer;
-    width: 20%;
-    border-radius: 10px;
+.button:hover {
+    background-color: #dce4e6;
 }
 
-/*botão LINHA ÚNICA e NEGRITO*/
-.button2 {
-    float: right;
-    background-color: #414141;
-    width: 12%;
-    height: 50px;
-    border: none;
-    margin-right: 20px;
-    color: white;
-    padding: 5px 32px;
-    text-align: center;
-    text-decoration: none;
-    /*display: inline-block;*/
-    font-size: 16px;
-
-    cursor: pointer;
-    border-radius: 10px;
+.button-primary {
+    background-color: #3498db;
+    color: #fff;
 }
 
-/*botão ENCONTRE IMAGEM*/
-.button3 {
-    float: right;
-    background-color: #225863;
-    width: 34%;
-    height: 50px;
-    /*margin-left: 40px;*/
-    border: none;
-    color: white;
-    padding: 5px 32px;
-    text-align: center;
-    text-decoration: none;
-    /*display: inline-block;*/
-    font-size: 16px;
-
-
-    cursor: pointer;
-    border-radius: 10px;
+.button-primary:hover {
+    background-color: #2980b9;
 }
 
-/*botão A) das alternativas*/
-.button4 {
-    background-color: #225863;
-    width: 14%;
-    height: 50px;
-    margin-right: 20px;
-    /*margin-right: 40px;*/
-    border: none;
-    color: white;
-    padding: 5px 10px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-
-    cursor: pointer;
-    border-radius: 10px;
+.button-cta {
+    background-color: #27ae60;
+    color: #fff;
+    padding: 15px;
+    font-size: 1.2em;
 }
 
-
-
-/*botão VERIFICA QUESTÃO*/
-.btn_verifica {
-    background-color: #005716;
-    /* Green */
-    border: none;
-    color: white;
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 20px;
-    margin: 4px 0px;
-    cursor: pointer;
-    width: 100%;
-    border-radius: 10px;
+.button-cta:hover {
+    background-color: #229954;
 }
 
-.questao {
-    background-color: #bbffcc;
-    /* Green */
-    border-style: solid;
-    border-color: #091016;
-    padding: 10px;
-    color: #091016;
+.button:active, .button-primary:active, .button-cta:active {
+    transform: translateY(1px);
+}
+
+/* Sidebar Groups */
+.actions-group, .instructions-group {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+}
+
+.actions-group h2, .instructions-group h2 {
+    font-size: 1.4em;
+    color: #2c3e50;
+    margin-top: 0;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 10px;
+}
+
+.instructions-group ul {
+    padding-left: 20px;
+    margin: 0;
+    color: #555;
+}
+
+.instructions-group li {
+    margin-bottom: 8px;
+}
+
+.instructions-group code {
+    background-color: #e3e3e3;
+    padding: 2px 5px;
+    border-radius: 3px;
+    font-family: monospace;
+}
+
+/* Verification and Generation */
+.verification-section, .generation-section {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #e0e0e0;
 }
 
 #verErros {
-    background-color: #ffcece;
-    /* red */
-    padding-left: 20px;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 16px;
-    color: red;
+    background-color: #fbeae5;
+    color: #c0392b;
+    padding: 15px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    border-left: 5px solid #c0392b;
+}
 
+#verquestoes .questao {
+    background-color: #e8f6f3;
+    border: 1px solid #d0e9e4;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+}
+
+#verquestoes .questao strong {
+    color: #16a085;
+}
+
+.editor-link {
+    text-align: center;
+    margin-top: 15px;
+    font-size: 0.9em;
+    color: #7f8c8d;
+}
+
+.editor-link a {
+    color: #3498db;
+    text-decoration: none;
+}
+
+.editor-link a:hover {
+    text-decoration: underline;
+}
+
+/* Footer */
+footer {
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid #e0e0e0;
+    text-align: center;
+    color: #7f8c8d;
+}
+
+footer input[type="file"] {
+    margin-top: 10px;
 }
