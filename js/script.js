@@ -4,6 +4,8 @@ var verErros = document.getElementById("verErros");
 var questions;
 
 document.addEventListener('DOMContentLoaded', function () {
+    document.getElementById('btn_gerador').style.display = "none";
+    document.getElementById('title-form-group').style.display = "none";
     document.getElementById('convertToHtml').addEventListener('click', transformToSingleLine);
     document.getElementById('colocaLetras').addEventListener('click', colocaLetras);
     document.getElementById('colocaFeedback').addEventListener('click', PalavraFeedback);
@@ -369,225 +371,687 @@ function insertAtCursor(textarea, text) {
 
 
 
-//INICIA OCULTO O BOTÃO GERADOR DE QTI
-document.getElementById('btn_gerador').style.display = "none";
+
 
 
 //FUNÇÃO PARA VERIFICAR E MOSTRAR AS QUESTÕES
+
+
 function verificaquestoes() {
 
-    //OCULTA O BOTÃO GERADOR
-    document.getElementById('btn_gerador').style.display = "none";
+
+
+
+
+        //OCULTA O BOTÃO GERADOR
+
+
+
+
+
+        document.getElementById('btn_gerador').style.display = "none";
+
+
+
+
+
+        document.getElementById('title-form-group').style.display = "none";
+
+
+
+
 
     //LIMPA A DIV VERQUESTÕES
+
+
     if (document.getElementById('verquestoes')) {
+
+
         var elemento = document.getElementById("verquestoes");
+
+
         while (elemento.firstChild) {
+
+
             elemento.removeChild(elemento.firstChild);
+
+
         }
+
+
     }
+
+
+
+
+
+    // Esconde a div de erros no início da verificação
+
+
+    verErros.style.display = "none";
+
+
+    verErros.innerHTML = ""; // Limpa os erros anteriores
+
+
+
+
 
     //console.log(document.getElementById("questions").value); retorna toda string Html
 
+
+
+
+
     //var questions = document.getElementById("questions").value.split("\n\n");
+
+
     questions = document.getElementById("questions").value.replace(/\n\s/g, "\n\n").replace(/\n\t/g, "\n\n").split("\n\n");
+
+
     //console.log(questions);
 
 
+
+
+
+
+
+
     var verquestoes = document.getElementById("verquestoes");
+
+
     gerar = true;
+
+
     var contaalternativas = 0;
-    verErros.innerHTML = "";
+
+
+    //verErros.innerHTML = ""; // This line is moved up
+
+
+
+
 
     //TRATANDO CADA QUESTÃO SOMENTE NO ARRAY "questions"
+
+
     for (var i = 0; i < questions.length; i++) {
+
+
         var question = questions[i].trim().split("\n");
+
+
         //console.log(question);
+
+
         var temresposta = false;
+
+
         var questaorepetida = false;
+
+
         var contarespostas = 0;
+
+
         contaalternativas = 0;
+
+
         //console.log("Questão:" +question.length);
+
+
         //['PERGUNTA', 'RESP1', '*RESP2', 'RESP3', 'RESP4', 'RESP5', 'FEEDBACK: resposta correta']
 
+
+
+
+
         //CONSULTA PARA EXCLUIR AS LINHAS VAZIAS
+
+
         if (question == "") {
+
+
             //console.log("vazio");
+
+
             questions.splice(i, 1); // Remove o item atual do array
+
+
             i--; // Ajusta o índice para não pular o próximo item
+
+
             continue;
+
+
         }
+
+
+
+
 
         //console.log("vai.. não está vazio");
 
+
+
+
+
         var div = document.createElement('div');
+
+
         div.id = 'container' + i;
+
+
         div.className = 'questao';
 
+
+
+
+
         //TÍTULO DA QUESTÃO - NÃO VAI PARA QTI
+
+
         div.innerHTML = "<strong>" + question[0] + "</strong>";
 
+
+
+
+
         //FISCALIZANDO A QUESTÃO
+
+
         for (var q = 1; q < question.length; q++) {
+
+
+
+
 
             //console.log(question[q]);
 
+
+
+
+
             var t = question[q].split(' ')[0].split('\t')[0].substring(0, 8); //t pega só os primeiros caracteres para remover espaços. 
+
+
+
+
 
             //console.log("t: "+t);//Retorna o texto abaixo: 
 
 
+
+
+
+
+
+
             //ENQUANTO EXISTIR ESPAÇO NO INICIO DE CADA LINHA DO ARRAY, RETIRA O ESPAÇO
+
+
             while (t == "" || t == " ") {
 
+
+
+
+
                 question[q] = question[q].substring(1);
+
+
                 t = question[q].split(' ')[0].substring(0, 8);
 
+
+
+
+
             }
+
+
+
+
 
             if (q == 2) {//Q = 2 É O INICIO DAS ALTERNATIVAS (SOMENTE LETRA A)
+
+
                 //console.log("t: "+t);
+
+
                 if (t != "A)" && t != "a)" && t != "*A)" && t != "*a)") {//SE AS ALTERNATIVAS NÃO COMEÇAREM COM "A)", AVISAR
+
+
                     //console.log("ATENÇÃO: COLOQUE O TEXTO DA PERGUNTA EM UMA LINHA SÓ.");
+
+
                     div.style.backgroundColor = "#ffa1a1";
+
+
                     div.innerHTML += "<br/><span style='color:#cd0000'>ATENÇÃO: CORRIGIR ESTRUTURA DA PERGUNTA.</span>";
-                    verErros.innerHTML +="ATENÇÃO: VERIFIQUE SE O ENUNCIADO ESTÁ EM UM PARÁGRAFO OU CORRIGIR ESTRUTURA DAS ALTERNATIVAS A) ; a) ; *A) ; *a).<br/>";
+
+
+                    verErros.innerHTML += "ATENÇÃO: VERIFIQUE SE O ENUNCIADO ESTÁ EM UM PARÁGRAFO OU CORRIGIR ESTRUTURA DAS ALTERNATIVAS A) ; a) ; *A) ; *a).<br/>";
+
+
                     gerar = false;
+
+
                 }
 
+
+
+
+
             }
+
+
+
+
 
             if (t == "FEEDBACK" || t == "Feedback" || t == "feedback") {
+
+
                 //console.log("FEEDBACK")
+
+
                 if (question[q + 1]) { //SE TIVER MAIS UM ELEMENTO NO ARRAY DEPOIS DO FEEDBACK
+
+
                     //FEEDBACK COM LINHA DE QUEBRA
+
+
                     div.style.backgroundColor = "#ffa1a1";
+
+
                     div.innerHTML += "<br/><span style='color:#cd0000'>ATENÇÃO: FEEDBACK COM QUEBRA DE LINHA.</span>";
-                    verErros.innerHTML +="ATENÇÃO: FEEDBACK COM QUEBRA DE LINHA.<br/>";
+
+
+                    verErros.innerHTML += "ATENÇÃO: FEEDBACK COM QUEBRA DE LINHA.<br/>";
+
+
                     gerar = false;
+
+
                 }
+
+
             } else {
+
+
                 //VER SE TEM ALTERNATIVA CORRETA
+
+
                 //console.log(question[q][0]) pega a primeira letra
+
+
                 if (question[q][0] == "*") {
+
+
                     //console.log(question[q]);// *b) C, B, B, A, C, A
+
+
                     temresposta = true;
+
+
                     contarespostas++;
+
+
                 }
+
+
+
+
 
                 //VER SE TEM ESPAÇO DEPOIS DAS LETRAS DE CADA ALTERNATIVA, PARA NÃO IR PARA O ARRAY. 
+
+
                 if (q > 1 && t[2]) {
 
+
+
+
+
                     if ((t[2] == ")" && t[3]) || t[2] != ")") {//NA ALTERNATIVA CORRETA VERIFICAR SE EXISTE A POSIÇÃO 3, SE NÃO NÃO HÁ ESPAÇO
+
+
                         console.log("falta espaço nessa alternativa: " + t);
+
+
                         div.style.backgroundColor = "#ffa1a1";
+
+
                         div.innerHTML += "<br/><span style='color:#cd0000'>ATENÇÃO: AS LETRAS DAS ALTERNATIVAS DEVEM CONTER ESPAÇO DEPOIS DO PARENTESES.</span>";
-                        verErros.innerHTML +="ATENÇÃO: AS LETRAS DAS ALTERNATIVAS DEVEM CONTER ESPAÇO DEPOIS DO PARENTESES<br/>";
+
+
+                        verErros.innerHTML += "ATENÇÃO: AS LETRAS DAS ALTERNATIVAS DEVEM CONTER ESPAÇO DEPOIS DO PARENTESES<br/>";
+
+
                         gerar = false;
+
+
                     }
 
+
+
+
+
                 }
+
+
+
+
 
                 //DELETAR AS PARTES VAZIAS DO ARRAY
+
+
                 if (question[q] == "") {
+
+
                     question.splice(q, 1);
+
+
                 }
+
+
+
+
 
                 if (q >= 2) {//VERIFICA SOMENTE AS ALTERNATIVAS. DEIXA DE FORA A DESCRIÇÃO DA PERGUNTA
+
+
                     //VER SE NÃO HÁ ALTERNATIVA REPETIDA
+
+
                     for (var qr = 2; qr < question.length - 1; qr++) {
+
+
                         //var alternativa = question[q].replace('*', '').replace(t+" ", "");
+
+
                         var alternativa = question[q].replace(question[q].substring(0, 3), "").replace('*', '').trim();
+
+
                         var alternativa2 = question[qr].replace(question[qr].substring(0, 3), "").replace('*', '').trim();
+
+
                         //console.log("alternativa["+(q-1)+"]: "+alternativa+ " | alternativa2["+(qr-1)+"]: "+alternativa2);
+
+
                         //console.log(alternativa == question[qr].replace('*', ''));
+
+
                         if (alternativa == alternativa2 && q != qr) {
+
+
                             questaorepetida = true;
+
+
                             //console.log("ALTERNATIVAS REPETIDAS!!!");
+
+
                             gerar = false;
+
+
                         }
+
+
                     }
+
+
                 }
 
+
+
+
+
                 //CONTA QUANTAS ALTERNATIVAS TEM NA QUESTÃO
+
+
                 contaalternativas++
+
+
             }
+
+
+
+
+
+
 
 
             if (question.length < 3) {//SE TIVER ALGUMA QUESTÃO COM MENOS DE DUAS ALTERNATIVAS [0= NUMERO DA QUESTÃO, 1=TEXTO DA QUESTÃO, 2 EM DIANTE = ALTERNATIVAS E FEEDBACK]
+
+
                 div.style.backgroundColor = "#ffa1a1";
-                div.innerHTML +="<br/><span style='color:#cd0000'> ATENÇÃO: QUESTÃO SEM ALTERNATIVAS </span>";
-                verErros.innerHTML +="ATENÇÃO: QUESTÃO SEM ALTERNATIVAS.<br/>";
+
+
+                div.innerHTML += "<br/><span style='color:#cd0000'> ATENÇÃO: QUESTÃO SEM ALTERNATIVAS </span>";
+
+
+                verErros.innerHTML += "ATENÇÃO: QUESTÃO SEM ALTERNATIVAS.<br/>";
+
+
                 gerar = false;
+
+
             }
+
+
+
+
+
+
 
 
         }
 
+
+
+
+
         //AGORA FORMATANDO A QUESTÃO E VISUAZANDO
+
+
         for (var j = 1; j < question.length; j++) {
 
+
+
+
+
             //SEPARA AS PALAVRAS DA FRASE E PEGA AS 8 PRIMEIRAS LETRAS DA PRIMEIRA PALAVRA "FEEDBACK"
+
+
             var t = question[j].split(' ')[0].substring(0, 8);
+
+
             //console.log("t="+t);
+
+
             //console.log(question[j]);
-                                      
+
+
+
+
+
+
+
 
             if (j == 1) {
+
+
                 //PINTA O TEXTO DA PERGUNTA
-                div.innerHTML +=  "<br/><span style='color:#005d0c'><p>"+find_Img(question[j])+"</p></span>"; 
+
+
+                div.innerHTML += "<br/><span style='color:#005d0c'><p>" + find_Img(question[j]) + "</p></span>";
+
+
             } else if (t == "FEEDBACK" || t == "Feedback" || t == "feedback") { //VERIFICA SE TEM FEEDBACK
+
+
                 //PINTA O FEEDBACK
-                div.innerHTML +=  "<br/><br/><span style='color:#bb1100'>"+find_Img(question[j])+"</span>";
+
+
+                div.innerHTML += "<br/><br/><span style='color:#bb1100'>" + find_Img(question[j]) + "</span>";
+
+
                 //console.log("t: "+t);
+
+
             } else {
 
-                if(j>2)div.innerHTML +="<br/>";
-                
+
+
+
+
+                if (j > 2) div.innerHTML += "<br/>";
+
+
+
+
+
                 //console.log(t);
+
+
                 //TRATANDO RESPOSTA CORRETA
-                if(question[j][0]=="*"){
-                    let altern_sem_asterisco = question[j].replace(t+" ", "");// variavel temporária só pra deixar o visualização das alternativas sem o asterisco. Mas o array continua com a marcação.
-                    question[j] = question[j].replace(t+" ", '*');//TIRA AS LETRAS DA ALTERNATIVA CORRETA NO ARRAY, MAS ADICIONA UM "" - O t TEM A PRIMEIRA PALAVRA
-                    div.innerHTML += "<span style='color:#096522; font-size: 18px;'><strong>"+String.fromCharCode(j - 1 + 64) +") "+find_Img(altern_sem_asterisco)+"</strong></span>";
-                }else{
-                    question[j] = question[j].replace(t+" ", "");//TIRA AS LETRAS DAS OUTRAS ALTERNATIVAS NO ARRAY - O t TEM A PRIMEIRA PALAVRA
-                    div.innerHTML += "<strong>"+String.fromCharCode(j - 1 + 64) +") </strong>"+find_Img(question[j]); //ACRESCENTA OS NÚMEROS NAS ALTERNATIVAS (SOMENTE NA VISUALIZAÇÃO, NO ARRAY NÃO)
+
+
+                if (question[j][0] == "*") {
+
+
+                    let altern_sem_asterisco = question[j].replace(t + " ", "");// variavel temporária só pra deixar o visualização das alternativas sem o asterisco. Mas o array continua com a marcação.
+
+
+                    question[j] = question[j].replace(t + " ", '*');//TIRA AS LETRAS DA ALTERNATIVA CORRETA NO ARRAY, MAS ADICIONA UM "" - O t TEM A PRIMEIRA PALAVRA
+
+
+                    div.innerHTML += "<span style='color:#096522; font-size: 18px;'><strong>" + String.fromCharCode(j - 1 + 64) + ") " + find_Img(altern_sem_asterisco) + "</strong></span>";
+
+
+                } else {
+
+
+                    question[j] = question[j].replace(t + " ", "");//TIRA AS LETRAS DAS OUTRAS ALTERNATIVAS NO ARRAY - O t TEM A PRIMEIRA PALAVRA
+
+
+                    div.innerHTML += "<strong>" + String.fromCharCode(j - 1 + 64) + ") </strong>" + find_Img(question[j]); //ACRESCENTA OS NÚMEROS NAS ALTERNATIVAS (SOMENTE NA VISUALIZAÇÃO, NO ARRAY NÃO)
+
+
                 }
+
+
             }
+
+
+
+
+
+
 
 
             //ATUALIZA O ARRAY "questions"
+
+
             questions[i] = question;
+
+
             //console.log(questions);
 
+
+
+
+
         }
+
+
+
+
 
         //VERIFICA SE TEM RESPOSTA OU QUESTÃO REPETIDA OU MAIS DE UMA RESPOSTA
-        if(temresposta == false || questaorepetida || contarespostas!=1 || contaalternativas<=1){
+
+
+        if (temresposta == false || questaorepetida || contarespostas != 1 || contaalternativas <= 1) {
+
+
             gerar = false;
-            div.style.backgroundColor  = "#ffa1a1";
+
+
+            div.style.backgroundColor = "#ffa1a1";
+
+
             //console.log("##############################");
+
+
             //console.log("######## Questão "+(i+1)+" #######");
-            if(!temresposta){verErros.innerHTML +="Falta a resposta correta.<br/>";};
-            if(questaorepetida){verErros.innerHTML +="Tem alternativa repetida.<br/>";};
-            if(contarespostas > 1){verErros.innerHTML +="Só pode ter 1 resposta correta.<br/>";};
-            if(contaalternativas<=1){verErros.innerHTML +="Precisa ter no mínimo 2 alternativa.<br/>";};
 
-            
+
+            if (!temresposta) { verErros.innerHTML += "Falta a resposta correta.<br/>"; };
+
+
+            if (questaorepetida) { verErros.innerHTML += "Tem alternativa repetida.<br/>"; };
+
+
+            if (contarespostas > 1) { verErros.innerHTML += "Só pode ter 1 resposta correta.<br/>"; };
+
+
+            if (contaalternativas <= 1) { verErros.innerHTML += "Precisa ter no mínimo 2 alternativa.<br/>"; };
+
+
+
+
+
+
+
+
         }
 
-        if(gerar){
-            document.getElementById('btn_gerador').style.display = "block";
-        }
-     
+
+
+
+
         //DIV PRONTA E PODE MOSTRAR NA PAGINA
+
+
         verquestoes.appendChild(div);
+
+
+
+
 
     }
 
+
+
+
+
+    // Se houver erros, exibe a div de erros
+
+
+    if (!gerar) {
+
+
+        verErros.style.display = "block";
+
+
+        } else {
+
+
+            document.getElementById('btn_gerador').style.display = "block";
+
+
+            document.getElementById('title-form-group').style.display = "block";
+
+
+        }
+
+
+
+
+
     //console.log(questions);
-    
+
+
+
+
+
 }
 
 

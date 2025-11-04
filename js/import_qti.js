@@ -1,6 +1,10 @@
 document.getElementById('fileInput').addEventListener('change', function (event) {
     // Cria uma instância da classe FileList para acessar os arquivos selecionados
     var files = event.target.files;
+
+    limpaTudo();
+    verErros.style.display = "none";
+    document.getElementById('title-form-group').style.display = "none";
             
     // Verifica se um arquivo foi selecionado
     if (files.length > 0) {
