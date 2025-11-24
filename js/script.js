@@ -142,7 +142,7 @@ function generateQti() {
 
         console.log("Respostas:" + responses);
 
-        console.log("NUMERO ALTERNATIVA CORRETA:" + responses.findIndex((response) => response.includes("*"))); 
+        console.log("NUMERO ALTERNATIVA CORRETA:" + responses.findIndex((response) => response.includes("*")));
 
 
 
@@ -378,563 +378,178 @@ function insertAtCursor(textarea, text) {
 
 
 function verificaquestoes() {
-
-
-
-
-
-        //OCULTA O BOTÃO GERADOR
-
-
-
-
-
-        document.getElementById('btn_gerador').style.display = "none";
-
-
-
-
-
-        document.getElementById('title-form-group').style.display = "none";
-
-
-
-
+    //OCULTA O BOTÃO GERADOR
+    document.getElementById('btn_gerador').style.display = "none";
+    document.getElementById('title-form-group').style.display = "none";
 
     //LIMPA A DIV VERQUESTÕES
-
-
     if (document.getElementById('verquestoes')) {
-
-
         var elemento = document.getElementById("verquestoes");
-
-
         while (elemento.firstChild) {
-
-
             elemento.removeChild(elemento.firstChild);
-
-
         }
-
-
     }
 
 
-
-
-
     // Esconde a div de erros no início da verificação
-
-
     verErros.style.display = "none";
-
-
     verErros.innerHTML = ""; // Limpa os erros anteriores
-
-
-
-
-
-    //console.log(document.getElementById("questions").value); retorna toda string Html
-
-
-
-
+    //console.log(document.getElementById("questions").value); //retorna toda string Html
 
     //var questions = document.getElementById("questions").value.split("\n\n");
-
-
-    questions = document.getElementById("questions").value.replace(/\n\s/g, "\n\n").replace(/\n\t/g, "\n\n").split("\n\n");
-
-
-    //console.log(questions);
-
-
-
-
-
-
-
+    questions = document.getElementById("questions").value.replace(/^[ \t]+/gm, "").split("\n\n");
+    console.log(questions);
 
     var verquestoes = document.getElementById("verquestoes");
-
-
     gerar = true;
-
-
     var contaalternativas = 0;
 
-
-    //verErros.innerHTML = ""; // This line is moved up
-
-
-
-
-
     //TRATANDO CADA QUESTÃO SOMENTE NO ARRAY "questions"
-
-
     for (var i = 0; i < questions.length; i++) {
-
-
         var question = questions[i].trim().split("\n");
-
-
         //console.log(question);
 
-
         var temresposta = false;
-
-
         var questaorepetida = false;
-
-
         var contarespostas = 0;
-
-
         contaalternativas = 0;
-
-
         //console.log("Questão:" +question.length);
-
-
         //['PERGUNTA', 'RESP1', '*RESP2', 'RESP3', 'RESP4', 'RESP5', 'FEEDBACK: resposta correta']
-
-
-
-
 
         //CONSULTA PARA EXCLUIR AS LINHAS VAZIAS
 
-
         if (question == "") {
-
-
             //console.log("vazio");
-
-
             questions.splice(i, 1); // Remove o item atual do array
-
-
             i--; // Ajusta o índice para não pular o próximo item
-
-
             continue;
-
-
         }
-
-
-
-
-
         //console.log("vai.. não está vazio");
 
-
-
-
-
         var div = document.createElement('div');
-
-
         div.id = 'container' + i;
-
-
         div.className = 'questao';
 
-
-
-
-
         //TÍTULO DA QUESTÃO - NÃO VAI PARA QTI
-
-
         div.innerHTML = "<strong>" + question[0] + "</strong>";
 
-
-
-
-
         //FISCALIZANDO A QUESTÃO
-
-
         for (var q = 1; q < question.length; q++) {
-
-
-
-
-
             //console.log(question[q]);
-
-
-
-
-
             var t = question[q].split(' ')[0].split('\t')[0].substring(0, 8); //t pega só os primeiros caracteres para remover espaços. 
-
-
-
-
-
-            //console.log("t: "+t);//Retorna o texto abaixo: 
-
-
-
-
-
-
-
+            //console.log("t: " + t);//Retorna o texto abaixo: 
 
             //ENQUANTO EXISTIR ESPAÇO NO INICIO DE CADA LINHA DO ARRAY, RETIRA O ESPAÇO
-
-
             while (t == "" || t == " ") {
-
-
-
-
-
                 question[q] = question[q].substring(1);
-
-
                 t = question[q].split(' ')[0].substring(0, 8);
-
-
-
-
-
             }
-
-
-
-
 
             if (q == 2) {//Q = 2 É O INICIO DAS ALTERNATIVAS (SOMENTE LETRA A)
-
-
                 //console.log("t: "+t);
-
-
-                if (t != "A)" && t != "a)" && t != "*A)" && t != "*a)") {//SE AS ALTERNATIVAS NÃO COMEÇAREM COM "A)", AVISAR
-
-
-                    //console.log("ATENÇÃO: COLOQUE O TEXTO DA PERGUNTA EM UMA LINHA SÓ.");
-
-
-                    div.style.backgroundColor = "#ffa1a1";
-
-
-                    div.innerHTML += "<br/><span style='color:#cd0000'>ATENÇÃO: CORRIGIR ESTRUTURA DA PERGUNTA.</span>";
-
-
-                    verErros.innerHTML += "ATENÇÃO: VERIFIQUE SE O ENUNCIADO ESTÁ EM UM PARÁGRAFO OU CORRIGIR ESTRUTURA DAS ALTERNATIVAS A) ; a) ; *A) ; *a).<br/>";
-
-
-                    gerar = false;
-
-
+                if (t != "A)" && t != "a)" && t != "*A)" && t != "*a)") {//SE AS ALTERNATIVAS NÃO COMEÇAREM COM "A)", JUNTAR AO ENUNCIADO
+                    question[q - 1] += "<br/>" + question[q];
+                    question.splice(q, 1);
+                    q--;
+                    continue;
                 }
-
-
-
-
-
             }
-
-
-
-
 
             if (t == "FEEDBACK" || t == "Feedback" || t == "feedback") {
-
-
                 //console.log("FEEDBACK")
-
-
                 if (question[q + 1]) { //SE TIVER MAIS UM ELEMENTO NO ARRAY DEPOIS DO FEEDBACK
-
-
                     //FEEDBACK COM LINHA DE QUEBRA
-
-
-                    div.style.backgroundColor = "#ffa1a1";
-
-
-                    div.innerHTML += "<br/><span style='color:#cd0000'>ATENÇÃO: FEEDBACK COM QUEBRA DE LINHA.</span>";
-
-
-                    verErros.innerHTML += "ATENÇÃO: FEEDBACK COM QUEBRA DE LINHA.<br/>";
-
-
-                    gerar = false;
-
-
+                    question[q] += "<br/>" + question[q + 1];
+                    question.splice(q + 1, 1);
+                    q--;
+                    continue;
                 }
-
 
             } else {
-
-
                 //VER SE TEM ALTERNATIVA CORRETA
-
-
                 //console.log(question[q][0]) pega a primeira letra
-
-
                 if (question[q][0] == "*") {
-
-
                     //console.log(question[q]);// *b) C, B, B, A, C, A
-
-
                     temresposta = true;
-
-
                     contarespostas++;
-
-
                 }
-
-
-
-
 
                 //VER SE TEM ESPAÇO DEPOIS DAS LETRAS DE CADA ALTERNATIVA, PARA NÃO IR PARA O ARRAY. 
-
-
                 if (q > 1 && t[2]) {
-
-
-
-
-
                     if ((t[2] == ")" && t[3]) || t[2] != ")") {//NA ALTERNATIVA CORRETA VERIFICAR SE EXISTE A POSIÇÃO 3, SE NÃO NÃO HÁ ESPAÇO
-
-
                         console.log("falta espaço nessa alternativa: " + t);
-
-
                         div.style.backgroundColor = "#ffa1a1";
-
-
                         div.innerHTML += "<br/><span style='color:#cd0000'>ATENÇÃO: AS LETRAS DAS ALTERNATIVAS DEVEM CONTER ESPAÇO DEPOIS DO PARENTESES.</span>";
-
-
                         verErros.innerHTML += "ATENÇÃO: AS LETRAS DAS ALTERNATIVAS DEVEM CONTER ESPAÇO DEPOIS DO PARENTESES<br/>";
-
-
                         gerar = false;
-
-
                     }
-
-
-
-
-
                 }
-
-
-
-
 
                 //DELETAR AS PARTES VAZIAS DO ARRAY
-
-
                 if (question[q] == "") {
-
-
                     question.splice(q, 1);
-
-
+                    console.log("deletado espaço vazio");
                 }
-
-
-
-
 
                 if (q >= 2) {//VERIFICA SOMENTE AS ALTERNATIVAS. DEIXA DE FORA A DESCRIÇÃO DA PERGUNTA
-
-
                     //VER SE NÃO HÁ ALTERNATIVA REPETIDA
-
-
                     for (var qr = 2; qr < question.length - 1; qr++) {
-
-
                         //var alternativa = question[q].replace('*', '').replace(t+" ", "");
-
-
                         var alternativa = question[q].replace(question[q].substring(0, 3), "").replace('*', '').trim();
-
-
                         var alternativa2 = question[qr].replace(question[qr].substring(0, 3), "").replace('*', '').trim();
-
-
                         //console.log("alternativa["+(q-1)+"]: "+alternativa+ " | alternativa2["+(qr-1)+"]: "+alternativa2);
-
-
                         //console.log(alternativa == question[qr].replace('*', ''));
 
-
                         if (alternativa == alternativa2 && q != qr) {
-
-
                             questaorepetida = true;
-
-
                             //console.log("ALTERNATIVAS REPETIDAS!!!");
-
-
                             gerar = false;
-
-
                         }
-
-
                     }
-
-
                 }
 
-
-
-
-
                 //CONTA QUANTAS ALTERNATIVAS TEM NA QUESTÃO
-
-
                 contaalternativas++
-
-
             }
-
-
-
-
-
-
 
 
             if (question.length < 3) {//SE TIVER ALGUMA QUESTÃO COM MENOS DE DUAS ALTERNATIVAS [0= NUMERO DA QUESTÃO, 1=TEXTO DA QUESTÃO, 2 EM DIANTE = ALTERNATIVAS E FEEDBACK]
-
-
                 div.style.backgroundColor = "#ffa1a1";
-
-
                 div.innerHTML += "<br/><span style='color:#cd0000'> ATENÇÃO: QUESTÃO SEM ALTERNATIVAS </span>";
-
-
                 verErros.innerHTML += "ATENÇÃO: QUESTÃO SEM ALTERNATIVAS.<br/>";
-
-
                 gerar = false;
-
-
             }
-
-
-
-
-
-
-
 
         }
 
-
-
-
-
         //AGORA FORMATANDO A QUESTÃO E VISUAZANDO
-
-
         for (var j = 1; j < question.length; j++) {
 
-
-
-
-
             //SEPARA AS PALAVRAS DA FRASE E PEGA AS 8 PRIMEIRAS LETRAS DA PRIMEIRA PALAVRA "FEEDBACK"
-
-
             var t = question[j].split(' ')[0].substring(0, 8);
-
-
             //console.log("t="+t);
-
-
             //console.log(question[j]);
 
-
-
-
-
-
-
-
             if (j == 1) {
-
-
                 //PINTA O TEXTO DA PERGUNTA
-
-
                 div.innerHTML += "<br/><span style='color:#005d0c'><p>" + find_Img(question[j]) + "</p></span>";
-
-
             } else if (t == "FEEDBACK" || t == "Feedback" || t == "feedback") { //VERIFICA SE TEM FEEDBACK
-
-
                 //PINTA O FEEDBACK
-
-
                 div.innerHTML += "<br/><br/><span style='color:#bb1100'>" + find_Img(question[j]) + "</span>";
-
-
                 //console.log("t: "+t);
-
-
             } else {
-
-
-
-
 
                 if (j > 2) div.innerHTML += "<br/>";
 
-
-
-
-
                 //console.log(t);
-
-
                 //TRATANDO RESPOSTA CORRETA
-
-
                 if (question[j][0] == "*") {
-
-
                     let altern_sem_asterisco = question[j].replace(t + " ", "");// variavel temporária só pra deixar o visualização das alternativas sem o asterisco. Mas o array continua com a marcação.
-
-
                     question[j] = question[j].replace(t + " ", '*');//TIRA AS LETRAS DA ALTERNATIVA CORRETA NO ARRAY, MAS ADICIONA UM "" - O t TEM A PRIMEIRA PALAVRA
-
-
                     div.innerHTML += "<span style='color:#096522; font-size: 18px;'><strong>" + String.fromCharCode(j - 1 + 64) + ") " + find_Img(altern_sem_asterisco) + "</strong></span>";
-
-
                 } else {
-
-
                     question[j] = question[j].replace(t + " ", "");//TIRA AS LETRAS DAS OUTRAS ALTERNATIVAS NO ARRAY - O t TEM A PRIMEIRA PALAVRA
-
-
                     div.innerHTML += "<strong>" + String.fromCharCode(j - 1 + 64) + ") </strong>" + find_Img(question[j]); //ACRESCENTA OS NÚMEROS NAS ALTERNATIVAS (SOMENTE NA VISUALIZAÇÃO, NO ARRAY NÃO)
-
-
                 }
 
 
@@ -1031,16 +646,16 @@ function verificaquestoes() {
         verErros.style.display = "block";
 
 
-        } else {
+    } else {
 
 
-            document.getElementById('btn_gerador').style.display = "block";
+        document.getElementById('btn_gerador').style.display = "block";
 
 
-            document.getElementById('title-form-group').style.display = "block";
+        document.getElementById('title-form-group').style.display = "block";
 
 
-        }
+    }
 
 
 
@@ -1057,27 +672,27 @@ function verificaquestoes() {
 
 
 //encontrar a imagem e troca para base64
-function find_Img(t){
-    
+function find_Img(t) {
+
     //console.log(t);
 
     if (typeof t === 'string' && t.includes('<img')) {
         const regex = /<img.*?src="(.*?)".*?\/?>/g; //AQUI É SÓ O METODO
         const matches = t.match(regex); //PEGA O METODO REGEX E LIMPA O TEXTO
         //console.log(matches); // retorna ['<img src="../images/img_00001.png">', '<img src="../images/img_00003.png">']
-        if(matches){
+        if (matches) {
             matches.forEach(match => {
                 const src = match.match(/src="(.*?)"/)[1]; //depois de achar a tag <img>, pega o nome da imagem
                 //console.log(src); //retornou img_00001.png
-                for(let i=0; i<guardaFotos.length; i++){
-                    if(src.replace("../images/", "") == guardaFotos[i][0]){
+                for (let i = 0; i < guardaFotos.length; i++) {
+                    if (src.replace("../images/", "") == guardaFotos[i][0]) {
                         t = t.replace(src, guardaFotos[i][1]);
                         //console.log("Encontrou: " + src + " " + guardaFotos[i][0]); // Encontrou: img_00001.png img_00001.png
                     }
                 }
             })
         }
-        
+
     }
 
     return t;
@@ -1089,31 +704,31 @@ function find_Img(t){
 
 //DESCRIÇÃO DA PERGUNTA EM UMA SÓ LINHA
 function transformToSingleLine() {
-  // Obtém a área de texto
-  const textarea = document.getElementById("questions");
+    // Obtém a área de texto
+    const textarea = document.getElementById("questions");
 
-  // Obtém o texto selecionado (caso haja seleção)
-  const selectedText = textarea.value.substring(
-    textarea.selectionStart,
-    textarea.selectionEnd
-  );
+    // Obtém o texto selecionado (caso haja seleção)
+    const selectedText = textarea.value.substring(
+        textarea.selectionStart,
+        textarea.selectionEnd
+    );
 
-  // Verifica se há texto selecionado
-  if (selectedText) {
-    // Remove quebras de linha e espaços extras do texto selecionado
-    const formattedText = selectedText.replace(/\n/g, "</p><p>").replace(/\s+/g, " ").trim();
-    // Substitui o texto selecionado pelo texto em uma única linha
-    
-    textarea.value = 
-      textarea.value.substring(0, textarea.selectionStart) +
-      "<p>"
-      + formattedText +
-      "</p>"
-      + textarea.value.substring(textarea.selectionEnd);
-        
+    // Verifica se há texto selecionado
+    if (selectedText) {
+        // Remove quebras de linha e espaços extras do texto selecionado
+        const formattedText = selectedText.replace(/\n/g, "</p><p>").replace(/\s+/g, " ").trim();
+        // Substitui o texto selecionado pelo texto em uma única linha
+
+        textarea.value =
+            textarea.value.substring(0, textarea.selectionStart) +
+            "<p>"
+            + formattedText +
+            "</p>"
+            + textarea.value.substring(textarea.selectionEnd);
+
     }
 
-    
+
 }
 
 
@@ -1165,43 +780,43 @@ function colocaLetras() {
 
 //COLOCAR A PALAVRA FEEDBACK NO INICIO DAS PALAVRAS SELECIONADAS E DEIXA EM UMA SÓ LINHA
 function PalavraFeedback() {
-  // Obtém a área de texto
-  const textarea = document.getElementById("questions");
+    // Obtém a área de texto
+    const textarea = document.getElementById("questions");
 
-  // Obtém o texto selecionado (caso haja seleção)
-  let selectedText = textarea.value.substring(
-    textarea.selectionStart,
-    textarea.selectionEnd
-  );
+    // Obtém o texto selecionado (caso haja seleção)
+    let selectedText = textarea.value.substring(
+        textarea.selectionStart,
+        textarea.selectionEnd
+    );
 
-  //limpa os espaços do inicio do feedback
-  //console.log(selectedText[0]==" ");
-  while(selectedText[0]==" "){
-    selectedText = selectedText.replace(selectedText[0], '').trim();
-  }
-    
-  let t = selectedText.split(' ')[0].replace('\n', ' ');
-  //console.log(t);
-  //console.log(t.substring(0,8));
-  if(t.substring(0,8) == "FEEDBACK" || t.substring(0,8) == "Feedback" || t.substring(0,8) == "feedback") { //VERIFICA SE TEM FEEDBACK
+    //limpa os espaços do inicio do feedback
+    //console.log(selectedText[0]==" ");
+    while (selectedText[0] == " ") {
+        selectedText = selectedText.replace(selectedText[0], '').trim();
+    }
+
+    let t = selectedText.split(' ')[0].replace('\n', ' ');
+    //console.log(t);
+    //console.log(t.substring(0,8));
+    if (t.substring(0, 8) == "FEEDBACK" || t.substring(0, 8) == "Feedback" || t.substring(0, 8) == "feedback") { //VERIFICA SE TEM FEEDBACK
         selectedText = selectedText.replace(t.split(' ')[0], "").trim();
         //console.log(selectedText);
-  }
-  
-  // Verifica se há texto selecionado
-  if (selectedText) {
-    // Remove quebras de linha e espaços extras do texto selecionado
-    const formattedText = selectedText.replace(/\n/g, "</p><p>").replace(/\s+/g, " ").trim();
-    // Substitui o texto selecionado pelo texto em uma única linha
-    textarea.value = 
-      textarea.value.substring(0, textarea.selectionStart) +
-      "FEEDBACK: <p>"
-      + formattedText +
-      "</p>"
-      + textarea.value.substring(textarea.selectionEnd);
     }
-  
-  
+
+    // Verifica se há texto selecionado
+    if (selectedText) {
+        // Remove quebras de linha e espaços extras do texto selecionado
+        const formattedText = selectedText.replace(/\n/g, "</p><p>").replace(/\s+/g, " ").trim();
+        // Substitui o texto selecionado pelo texto em uma única linha
+        textarea.value =
+            textarea.value.substring(0, textarea.selectionStart) +
+            "FEEDBACK: <p>"
+            + formattedText +
+            "</p>"
+            + textarea.value.substring(textarea.selectionEnd);
+    }
+
+
 }
 
 
@@ -1221,15 +836,15 @@ function Italico() {
         // Remove quebras de linha e espaços extras do texto selecionado
         const formattedText = selectedText;
         // Substitui o texto selecionado pelo texto em uma única linha
-        textarea.value = 
-          textarea.value.substring(0, textarea.selectionStart) +
-          "<i>"
-          + formattedText +
-          "</i>"
-          + textarea.value.substring(textarea.selectionEnd);
+        textarea.value =
+            textarea.value.substring(0, textarea.selectionStart) +
+            "<i>"
+            + formattedText +
+            "</i>"
+            + textarea.value.substring(textarea.selectionEnd);
     }
-  
-  
+
+
 }
 
 //COLOCAR AS PALAVRAS SELECIONADAS EM NEGRITO
@@ -1250,30 +865,30 @@ function Negrito() {
         // Remove quebras de linha e espaços extras do texto selecionado
         const formattedText = selectedText;
         // Substitui o texto selecionado pelo texto em uma única linha
-        textarea.value = 
-          textarea.value.substring(0, textarea.selectionStart) +
-          "<strong>"
-          + formattedText +
-          "</strong>"
-          + textarea.value.substring(textarea.selectionEnd);
+        textarea.value =
+            textarea.value.substring(0, textarea.selectionStart) +
+            "<strong>"
+            + formattedText +
+            "</strong>"
+            + textarea.value.substring(textarea.selectionEnd);
     }
-  
-  
+
+
 }
 
 
 //SALVA NO LOCALSTORAGE O TÍTULO, QUESTÕES E IMAGENS.
 var t;
-function salvarLocalStorage(){
-    
+function salvarLocalStorage() {
+
     clearTimeout(t);
 
-    t = setTimeout(function() {
+    t = setTimeout(function () {
         //salva o item localStorage
         var title = document.getElementById("title").value;
         //var title_questao = document.getElementById("title_question").value;
         var textarea = document.getElementById("questions").value;
-        
+
 
         localStorage.setItem("idCurso", title);
         //localStorage.setItem("idQuestao", title_questao);
@@ -1290,53 +905,53 @@ function salvarLocalStorage(){
 
 //CARREGA AS INFORMAÇÕES SALVA
 CarregaStorage();
-function CarregaStorage(){
+function CarregaStorage() {
     //Recuperar a informações do registro do localStorage
     var id_nome = localStorage.getItem("idCurso");
-    if(id_nome){
-        document.getElementById("title").innerHTML = id_nome;  
-    }else{
+    if (id_nome) {
+        document.getElementById("title").innerHTML = id_nome;
+    } else {
         document.getElementById("title").innerHTML = "modelo_nomedocurso_ava_objetiva_onl";
     }
 
 
     var id_questoes = localStorage.getItem("idTextArea");
-    if(id_questoes){
+    if (id_questoes) {
         document.getElementById("questions").innerHTML = id_questoes;
-    }else{
+    } else {
         document.getElementById("questions").innerHTML = "Questão 01:\nPERGUNTA\nA) RESP1\n*B) RESP2_CORRETA\nC) RESP3\nD) RESP4\nE) RESP5\nFEEDBACK: resposta 'RESP2' correta\n\nQuestão 02:\nPERGUNTA\nA) RESP1\nB) RESP2\nC) RESP3\n*D) RESP4_CORRETA\nE) RESP5\nFEEDBACK: resposta 'RESP4' correta";
     }
 
 
     var id_img = localStorage.getItem("idImgFile");
 
-    if(id_img){
+    if (id_img) {
         guardaFotos = JSON.parse(id_img);
-        
-    }else{
-        guardaFotos=[];
+
+    } else {
+        guardaFotos = [];
     }
 
 
-    
+
 
 }
 
 
 //REMOVE TODAS AS QUESTÕES E LIMPA O LOCALSTORAGE.
-function limpaTudo(){
+function limpaTudo() {
 
     localStorage.clear();
-    
+
     const textarea = document.getElementById("questions");
     textarea.value = "Questão 01:\nPERGUNTA\nA) RESP1\n*B) RESP2_CORRETA\nC) RESP3\nD) RESP4\nE) RESP5\nFEEDBACK: OPCIONAL\n\nQuestão 02:\nPERGUNTA\nA) RESP1\nB) RESP2\nC) RESP3\n*D) RESP4_CORRETA\nE) RESP5\nFEEDBACK: OPCIONAL";
-                
+
     document.getElementById("title").value = "modelo_nomedocurso_ava_objetiva_onl";
-    
+
     guardaFotos = [];
 
     //LIMPA A DIV VERQUESTÕES
-    if(document.getElementById('verquestoes')){
+    if (document.getElementById('verquestoes')) {
         var elemento = document.getElementById("verquestoes");
         while (elemento.firstChild) {
             elemento.removeChild(elemento.firstChild);
@@ -1347,14 +962,14 @@ function limpaTudo(){
 
 
 //SE PRESSIONAR ALGUMA TECLA 
-document.onkeyup = function(e) {
+document.onkeyup = function (e) {
     //console.log(e.which);
     //CTRL+SHIFT+L = LIMPA TUDO
-    if (e.ctrlKey && e.shiftKey && e.which == 76) { 
-         
+    if (e.ctrlKey && e.shiftKey && e.which == 76) {
+
         // Exibe uma caixa de diálogo de confirmação
         const userConfirmed = confirm("As questões serão apagadas! Posso continuar?");
-        
+
         // Se o usuário clicar em "OK" (Sim), chama a função limpaTudo
         if (userConfirmed) {
             limpaTudo();
@@ -1369,7 +984,7 @@ document.onkeyup = function(e) {
 };
 
 
-function addQuestion(){
+function addQuestion() {
     //const textarea = document.getElementById("questions");
     const textEstr = "Questão 0000\nPERGUNTA\nA) \nB) \nC) \nD) \nE) \nFEEDBACK: ";
 
